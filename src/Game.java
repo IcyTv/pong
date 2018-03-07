@@ -36,14 +36,18 @@ public class Game extends JPanel implements Runnable{
 		//new Thread(this).start();
 		players = new Player[2];
 		score = new int[] {0, 0};
-		b = new Ball(3, w, h, 20);
+		if(Math.random() > 0.5){
+			b = new Ball(3, w, h, 20);
+		} else {
+			b = new Ball(-3, w, h, 20);
+		}
 		players[0] = new Player(50, (int)h/2, 10, 100, new int[]{w, h});
 		players[1] = new Player(w-50, (int)h/2, 10, 100, new int[]{w, h});
 		
 
 		baseF = new Font("Courier", Font.TRUETYPE_FONT, 90);
 		try {
-			baseF = Font.createFont(Font.TRUETYPE_FONT, new File("bit5x3.ttf"));
+			baseF = Font.createFont(Font.TRUETYPE_FONT, new File("./bit5x3.ttf"));
 		} catch (FontFormatException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -51,9 +55,9 @@ public class Game extends JPanel implements Runnable{
 		
 		try {
 			sounds = new Audio[] {
-				new Audio("BallPaddle.wav"),
-				new Audio("BallWall.wav"),
-				new Audio("Score.wav")
+				new Audio("./BallPaddle.wav"),
+				new Audio("./BallWall.wav"),
+				new Audio("./Score.wav")
 			};
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -67,10 +71,7 @@ public class Game extends JPanel implements Runnable{
 		this.getActionMap().put("r", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				b.reset(1);
-				won = false;
-				score[0] = 0;
-				score[1] = 0;
+				reset();
 			}
 		});
 		this.getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "space");
@@ -227,6 +228,16 @@ public class Game extends JPanel implements Runnable{
 	}
 	public void setSpeed(double s){
 		speed = s;
+	}
+	public void reset() {
+		if(Math.random() > 0.5){
+			b.reset(1);
+		} else {
+			b.reset(-1);
+		}
+		won = false;
+		score[0] = 0;
+		score[1] = 0;
 	}
 }
 

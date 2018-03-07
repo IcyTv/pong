@@ -6,20 +6,23 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
+@SuppressWarnings("all")
 public class Settings extends JPanel implements Runnable{
 	private int WIDTH, HEIGHT;
 	private Button[] buttons;
 	private Font baseF;
+	private boolean reset;
 	
 	public Settings(int w, int h, Game gm, Main ctrl) {
 		new Thread(this).start();
-		buttons = new Button[3];
+		buttons = new Button[4];
 		WIDTH = w;
 		HEIGHT = h;
+		reset = false;
 		
 		baseF = new Font("Courier", Font.TRUETYPE_FONT, 90);
 		try {
-			baseF = Font.createFont(Font.TRUETYPE_FONT, new File("bit5x3.ttf"));
+			baseF = Font.createFont(Font.TRUETYPE_FONT, new File("./bit5x3.ttf"));
 		} catch (FontFormatException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -60,6 +63,8 @@ public class Settings extends JPanel implements Runnable{
 							}
 							gm.setSpeed(round(tmp, 2));
 							b.setSecTxt("" + round(tmp, 2));
+						} else if(b.getTxt() == "RESET"){
+							reset = !reset;
 						}
 					}
 				}
@@ -127,6 +132,27 @@ public class Settings extends JPanel implements Runnable{
 		g2.setColor(Color.BLACK);
 		g2.drawString(buttons[2].getTxt(), buttons[2].getX() + 5, buttons[2].getY() + h - 3);
 		
+		w = g2.getFontMetrics(font).stringWidth("RESET");
+		
+		if(buttons[3] == null) {
+			buttons[3] = new Button(WIDTH/2 - w/2, 40, w, h, "RESET", "");
+		}
+		//buttons[3].setSecTxt("" + reset);
+
+		//w = g2.getFontMetrics(font).stringWidth(buttons[3].getSecTxt());
+		if(reset){
+			g2.setColor(Color.BLACK);
+		} else {
+			g2.setColor(Color.WHITE);
+		}
+		g2.fillRect(buttons[3].getX(), buttons[3].getY(), buttons[3].getW(), buttons[3].getH());
+		g2.drawString(buttons[3].getSecTxt(), buttons[3].getX() + buttons[3].getW()/2 - w/2, buttons[3].getY() + 2 * h + 5);
+		if(reset){
+			g2.setColor(Color.WHITE);
+		} else {
+			g2.setColor(Color.BLACK);
+		}
+		g2.drawString(buttons[3].getTxt(), buttons[3].getX() + 5, buttons[3].getY() + h - 3);
 	}
 
 	public static double round(double value, int places) {
@@ -136,5 +162,8 @@ public class Settings extends JPanel implements Runnable{
 	    value = value * factor;
 	    long tmp = Math.round(value);
 	    return (double) tmp / factor;
+	}
+	public boolean doReset(){
+		return reset;
 	}
 }

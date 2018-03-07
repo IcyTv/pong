@@ -27,6 +27,10 @@ public class Main extends JFrame {
 	}
 	
 	public void startGame() {
+		if(setting.doReset()){
+			gameMaster.reset();
+		}
+		
 		((Component)gameMaster).setFocusable(true);
 		
 		getContentPane().removeAll();

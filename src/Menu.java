@@ -4,6 +4,8 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 
+
+@SuppressWarnings("all")
 public class Menu extends JPanel implements Runnable{
 	private int WIDTH, HEIGHT;
 	private Button[] buttons;
@@ -15,7 +17,13 @@ public class Menu extends JPanel implements Runnable{
 		
 		buttons = new Button[3];
 		
-		
+		this.getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"), "esc");
+		this.getActionMap().put("esc", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
 		
 		
 		addMouseListener(new MouseAdapter() {
@@ -61,7 +69,7 @@ public class Menu extends JPanel implements Runnable{
 		//Font titleFont = new Font("Bit5x3", Font.TRUETYPE_FONT, 100);
 		Font baseF = new Font("Courier", Font.TRUETYPE_FONT, 80);
 		try {
-			baseF = Font.createFont(Font.TRUETYPE_FONT, new File("bit5x3.ttf"));
+			baseF = Font.createFont(Font.TRUETYPE_FONT, new File("./bit5x3.ttf"));
 		} catch (FontFormatException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
